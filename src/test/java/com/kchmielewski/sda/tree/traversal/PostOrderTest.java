@@ -1,7 +1,6 @@
 package com.kchmielewski.sda.tree.traversal;
 
 import com.kchmielewski.sda.tree.BinarySearchTree;
-import com.kchmielewski.sda.tree.DefaultBinarySearchTree;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -14,28 +13,21 @@ public class PostOrderTest {
 
     @Test
     public void forOneElementTreeReturnsOneElementList() throws Exception {
-        BinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(5);
+        BinarySearchTree<Integer> tree = BinarySearchTreeTraversalData.singleElementTree();
+
         assertThat(treeTraversal.traverse(tree)).containsExactly(5);
     }
 
     @Test
     public void forTreeWithBothChildrenReturnsLeftSubtreeThenRightSubtreeThenRoot() throws Exception {
-        BinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(5);
-        tree.insert(4);
-        tree.insert(6);
+        BinarySearchTree<Integer> tree = BinarySearchTreeTraversalData.twoDepthTree();
 
         assertThat(treeTraversal.traverse(tree)).containsExactly(4, 6, 5);
     }
 
     @Test
     public void forThreeLevelDepthReturnsLeftSubtreeThenRightSubtreeThenRoot() throws Exception {
-        BinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(5);
-        tree.insert(3);
-        tree.insert(2);
-        tree.insert(4);
-        tree.insert(7);
-        tree.insert(6);
-        tree.insert(8);
+        BinarySearchTree<Integer> tree = BinarySearchTreeTraversalData.threeDepthTree();
 
         assertThat(treeTraversal.traverse(tree)).containsExactly(2, 4, 3, 6, 8, 7, 5);
     }
