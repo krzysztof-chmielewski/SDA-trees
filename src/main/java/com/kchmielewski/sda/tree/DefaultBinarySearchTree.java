@@ -1,16 +1,31 @@
 package com.kchmielewski.sda.tree;
 
+import com.kchmielewski.sda.tree.traversal.BinarySearchTreeTraversal;
+import com.kchmielewski.sda.tree.traversal.InOrder;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public class DefaultBinarySearchTree<T extends Comparable<T>> implements BinarySearchTree<T> {
     private final T value;
+    private final BinarySearchTreeTraversal traversal;
     private BinarySearchTree<T> left;
     private BinarySearchTree<T> right;
 
     public DefaultBinarySearchTree(T value) {
+        this(value, new InOrder());
+    }
+
+    public DefaultBinarySearchTree(T value, BinarySearchTreeTraversal traversal) {
         if (value == null) {
             throw new IllegalArgumentException("Value cannot be null.");
         }
+        if (traversal == null) {
+            throw new IllegalArgumentException("Traversal cannot be null.");
+        }
+        this.traversal = traversal;
         this.value = value;
     }
 
@@ -27,13 +42,13 @@ public class DefaultBinarySearchTree<T extends Comparable<T>> implements BinaryS
         }
         if (comparisonResult < 0) {
             if (left == null) {
-                left = new DefaultBinarySearchTree<>(value);
+                left = new DefaultBinarySearchTree<>(value, traversal);
             } else {
                 left.insert(value);
             }
         } else {
             if (right == null) {
-                right = new DefaultBinarySearchTree<>(value);
+                right = new DefaultBinarySearchTree<>(value, traversal);
             } else {
                 right.insert(value);
             }
@@ -68,5 +83,18 @@ public class DefaultBinarySearchTree<T extends Comparable<T>> implements BinaryS
         result = 31 * result + (left != null ? left.hashCode() : 0);
         result = 31 * result + (right != null ? right.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return traversal.traverse(this).iterator();
+    }
+
+    @Override
+    public String toString() {
+        List<T> result = new ArrayList<>();
+        iterator().forEachRemaining(result::add);
+
+        return "DefaultBinarySearchTree{" + result + "}";
     }
 }

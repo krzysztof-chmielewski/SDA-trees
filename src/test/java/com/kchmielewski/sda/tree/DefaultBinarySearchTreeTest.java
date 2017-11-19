@@ -6,6 +6,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -18,6 +21,13 @@ public class DefaultBinarySearchTreeTest {
         expectedException.expect(IllegalArgumentException.class);
 
         new DefaultBinarySearchTree<Integer>(null);
+    }
+
+    @Test
+    public void cannotCreateTreeWithoutIterator() throws Exception {
+        expectedException.expect(IllegalArgumentException.class);
+
+        new DefaultBinarySearchTree<>(5, null);
     }
 
     @Test
@@ -69,5 +79,17 @@ public class DefaultBinarySearchTreeTest {
         tree.insert(9);
 
         assertThat(tree.right()).contains(rightSubtree);
+    }
+
+    @Test
+    public void iteratorReturnsInOrderByDefault() throws Exception {
+        DefaultBinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(8);
+        tree.insert(7);
+        tree.insert(9);
+
+        List<Integer> result = new ArrayList<>(3);
+        tree.iterator().forEachRemaining(result::add);
+
+        assertThat(result).containsExactly(7, 8, 9);
     }
 }
