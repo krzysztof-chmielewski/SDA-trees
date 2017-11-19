@@ -1,8 +1,6 @@
 package com.kchmielewski.sda.tree;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
@@ -10,31 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class DefaultBinarySearchTreeTest {
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void cannotCreateTreeWithoutValue() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-
-        new DefaultBinarySearchTree<Integer>(null);
+        assertThatThrownBy(() -> new DefaultBinarySearchTree<Integer>(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void cannotCreateTreeWithoutIterator() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-
-        new DefaultBinarySearchTree<>(5, null);
+        assertThatThrownBy(() -> new DefaultBinarySearchTree<>(5, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void cannotInsertAlreadyExistingValue() throws Exception {
-        expectedException.expect(IllegalArgumentException.class);
-
-        new DefaultBinarySearchTree<>(8).insert(8);
+        assertThatThrownBy(() -> new DefaultBinarySearchTree<>(8).insert(8)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
