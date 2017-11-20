@@ -66,6 +66,24 @@ public class DefaultBinarySearchTree<T extends Comparable<T>> implements BinaryS
     }
 
     @Override
+    public Optional<T> find(T value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value passed to find method cannot be null.");
+        }
+
+        int comparisonResult = value.compareTo(this.value);
+        if (comparisonResult == 0) {
+            return Optional.of(this.value);
+        } else if (comparisonResult < 0 && left != null) {
+            return left.find(value);
+        } else if (comparisonResult > 0 && right != null) {
+            return right.find(value);
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

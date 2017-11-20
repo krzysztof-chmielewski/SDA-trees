@@ -6,6 +6,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -81,5 +82,39 @@ public class DefaultBinarySearchTreeTest {
         tree.iterator().forEachRemaining(result::add);
 
         assertThat(result).containsExactly(7, 8, 9);
+    }
+
+    @Test
+    public void findForNullThrowsException() throws Exception {
+        assertThatThrownBy(() -> new DefaultBinarySearchTree<>(5).find(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void findForNonExisintValueReturnsEmptyOptional() throws Exception {
+        assertThat(new DefaultBinarySearchTree<>(5).find(1)).isEqualTo(Optional.empty());
+    }
+
+    @Test
+    public void findForRootValueReturnsItsValue() throws Exception {
+        assertThat(new DefaultBinarySearchTree<>(5).find(5)).isEqualTo(Optional.of(5));
+    }
+
+    @Test
+    public void findForLowerValueGoesToLeftSubtree() throws Exception {
+        DefaultBinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(5);
+        tree.insert(4);
+        tree.insert(6);
+
+        assertThat(tree.find(4)).isEqualTo(Optional.of(4));
+    }
+
+    @Test
+    public void findForLowerValueGoesToRightSubtree() throws Exception {
+        DefaultBinarySearchTree<Integer> tree = new DefaultBinarySearchTree<>(5);
+        tree.insert(4);
+        tree.insert(6);
+
+        assertThat(tree.find(6)).isEqualTo(Optional.of(6));
     }
 }

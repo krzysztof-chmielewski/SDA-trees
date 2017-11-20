@@ -10,4 +10,6 @@ public interface BinaryTree<Tree extends BinaryTree<Tree, Value>, Value> {
     Optional<Tree> left();
 
     Optional<Tree> right();
+
+    Optional<Value> find(Value value);
 }
