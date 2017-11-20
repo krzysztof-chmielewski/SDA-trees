@@ -9,8 +9,7 @@ import java.util.List;
 public class DefaultBinarySearchTreeBalancer implements BinarySearchTreeBalancer {
     @Override
     public <V extends Comparable<V>> BinarySearchTree<V> balance(BinarySearchTree<V> tree) {
-        List<V> values = new ArrayList<>();
-        tree.forEach(values::add);
+        List<V> values = new ArrayList<>(new InOrder().traverse(tree));
         int rootIndex = values.size() / 2;
         BinarySearchTree<V> result = new DefaultBinarySearchTree<>(values.get(rootIndex));
         if (rootIndex >= 1) {
